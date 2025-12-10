@@ -70,4 +70,20 @@ export default defineConfig([
     },
   },
 ])
+
+
+// popUp native JS
+// https://www.youtube.com/watch?v=ZCvemsUfwPQ&ab_channel=PedroTech
+
+// popUp  createPortal
+// https://youtu.be/6uypfDjBQ9Q
+
+
+
+
+
+// ===============Slider===================
+// https://www.youtube.com/watch?v=XxG7vqFecR8&t=558s&ab_channel=CodingNepal
+
+// https://www.youtube.com/watch?v=KL_yIf5uiJo&ab_channel=TravelsCode
 ```
