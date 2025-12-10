@@ -14,10 +14,12 @@ export default function App() {
   const note = data?.notes ?? [];
   const totalPages = data?.totalPages ?? 0;
 
+
   return (
     <div className={css.app}>
       <header className={css.toolbar}>
         {totalPages > 1 && <Pagination totalPages={totalPages} page={page} onChangePage={setPage}/>}
+        <button className={css.button}>Create note +</button>
       </header>
       {note.length > 0 && <NoteList notes={note} />}
     </div>
