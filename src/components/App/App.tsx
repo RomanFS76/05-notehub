@@ -1,20 +1,32 @@
-import { useQuery } from '@tanstack/react-query';
+import { keepPreviousData, useQuery } from '@tanstack/react-query';
 import css from './App.module.css';
 import { fetchNotes } from '../../services/noteService';
 import NoteList from '../NoteList/NoteList';
 import Pagination from '../Pagination/Pagination';
 import { useState } from 'react';
+import Modal from '../Modal/Modal';
+import NoteForm from '../NoteForm/NoteForm';
 
 export default function App() {
   const [page, setPage] = useState(1);
+  const [isModal, setIsModal] = useState(false);
 
   const { data } = useQuery({
     queryKey: ['notes', page],
     queryFn: () => fetchNotes(page),
+    placeholderData: keepPreviousData,
   });
 
   const note = data?.notes ?? [];
   const totalPages = data?.totalPages ?? 0;
+
+  const openModal = () => {
+    setIsModal(true);
+  };
+
+  const closeModal = () => {
+    setIsModal(false);
+  };
 
   return (
     <div className={css.app}>
@@ -26,9 +38,16 @@ export default function App() {
             onChangePage={setPage}
           />
         )}
-        <button className={css.button}>Create note +</button>
+        <button className={css.button} onClick={openModal}>
+          Create note +
+        </button>
       </header>
       {note.length > 0 && <NoteList notes={note} />}
+      {isModal && (
+        <Modal onClose={closeModal}>
+          <NoteForm />
+        </Modal>
+      )}
     </div>
   );
 }
