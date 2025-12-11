@@ -14,8 +14,8 @@ interface notesResponce {
   totalPages: number;
 }
 
-export const fetchNotes = async (): Promise<notesResponce> => {
-  const { data } = await NotesAPI.get<notesResponce>(`/notes`);
+export const fetchNotes = async (page: number): Promise<notesResponce> => {
+  const { data } = await NotesAPI.get<notesResponce>(`/notes`, { params: { page, perPage: 12 } });
   return data;
 };
 
