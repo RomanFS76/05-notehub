@@ -45,7 +45,7 @@ export default function App() {
       {note.length > 0 && <NoteList notes={note} />}
       {isModal && (
         <Modal onClose={closeModal}>
-          <NoteForm />
+          <NoteForm onCancel={closeModal}/>
         </Modal>
       )}
     </div>
