@@ -1,8 +1,8 @@
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import type { FormikHelpers } from 'formik';
-
+import * as Yup from 'yup';
 import css from './NoteForm.module.css';
-import { useQueryClient , useMutation } from '@tanstack/react-query';
+import { useQueryClient, useMutation } from '@tanstack/react-query';
 import { createNote } from '../../services/noteService';
 import { useId } from 'react';
 
@@ -22,6 +22,18 @@ interface noteFormProps {
   onCancel: () => void;
 }
 
+const NoteFormSchema = Yup.object().shape({
+  title: Yup.string()
+    .min(3, "Title must be at least 3 characters")
+    .max(50, "Title is too long")
+    .required("Title is required"),
+  content: Yup.string()
+    .max(500, "Content is too long"),
+    tag:Yup.string()
+    .oneOf(['Todo', 'Work', 'Personal','Meeting', 'Shopping'], 'Invalid tag')
+    .required("Tag is required"),
+});
+
 export default function NoteForm({ onCancel }: noteFormProps) {
   const fieldId = useId();
 
@@ -29,7 +41,7 @@ export default function NoteForm({ onCancel }: noteFormProps) {
 
   const mutation = useMutation({
     mutationFn: createNote,
-    onSuccess: () => {	    
+    onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['notes'] });
     },
   });
@@ -41,11 +53,11 @@ export default function NoteForm({ onCancel }: noteFormProps) {
     console.log(values);
     mutation.mutate(values);
     actions.resetForm();
-    onCancel()
+    onCancel();
   };
 
   return (
-    <Formik initialValues={initialValues} onSubmit={handleSubmit}>
+    <Formik initialValues={initialValues} onSubmit={handleSubmit} validationSchema={NoteFormSchema}>
       <Form className={css.form}>
         <div className={css.formGroup}>
           <label htmlFor={`${fieldId}-title`}>Title</label>
