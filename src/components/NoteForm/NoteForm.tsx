@@ -1,6 +1,10 @@
 import { Formik, Form, Field, ErrorMessage } from 'formik';
-import { useId } from 'react';
+import type { FormikHelpers } from 'formik';
+
 import css from './NoteForm.module.css';
+import { useQueryClient , useMutation } from '@tanstack/react-query';
+import { createNote } from '../../services/noteService';
+import { useId } from 'react';
 
 interface NoteFormValues {
   title: string;
@@ -20,8 +24,28 @@ interface noteFormProps {
 
 export default function NoteForm({ onCancel }: noteFormProps) {
   const fieldId = useId();
+
+  const queryClient = useQueryClient();
+
+  const mutation = useMutation({
+    mutationFn: createNote,
+    onSuccess: () => {	    
+      queryClient.invalidateQueries({ queryKey: ['notes'] });
+    },
+  });
+
+  const handleSubmit = (
+    values: NoteFormValues,
+    actions: FormikHelpers<NoteFormValues>
+  ) => {
+    console.log(values);
+    mutation.mutate(values);
+    actions.resetForm();
+    onCancel()
+  };
+
   return (
-    <Formik initialValues={initialValues} onSubmit={() => {}}>
+    <Formik initialValues={initialValues} onSubmit={handleSubmit}>
       <Form className={css.form}>
         <div className={css.formGroup}>
           <label htmlFor={`${fieldId}-title`}>Title</label>

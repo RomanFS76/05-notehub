@@ -3,7 +3,7 @@ import css from './App.module.css';
 import { fetchNotes } from '../../services/noteService';
 import NoteList from '../NoteList/NoteList';
 import Pagination from '../Pagination/Pagination';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Modal from '../Modal/Modal';
 import NoteForm from '../NoteForm/NoteForm';
 
@@ -16,6 +16,8 @@ export default function App() {
     queryFn: () => fetchNotes(page),
     placeholderData: keepPreviousData,
   });
+   useEffect(()=>{},[])
+
 
   const note = data?.notes ?? [];
   const totalPages = data?.totalPages ?? 0;

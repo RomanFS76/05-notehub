@@ -4,11 +4,10 @@ import css from './NoteList.module.css';
 interface notesProps {
   notes: Note[];
 }
-
-export default function NoteList({notes}: notesProps) {
+export default function NoteList({ notes }: notesProps) {
   return (
     <ul className={css.list}>
-      {notes.map((note) => (
+      {notes.map(note => (
         <li className={css.listItem} key={note.id}>
           <h2 className={css.title}>{note.title}</h2>
           <p className={css.content}>{note.content}</p>
