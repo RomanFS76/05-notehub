@@ -1,9 +1,9 @@
-import css from './App.module.css';
+import css from './NoteForm.module.css';
 
-export default function App() {
+export default function NoteForm() {
   return (
     <>
-      <div className={css.app}>Hello</div>
+      <div className={css.app}>NoteForm</div>
     </>
   );
 }

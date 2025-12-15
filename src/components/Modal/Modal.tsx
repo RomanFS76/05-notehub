@@ -1,9 +1,9 @@
-import css from './App.module.css';
+import css from './Modal.module.css';
 
-export default function App() {
+export default function Modal() {
   return (
     <>
-      <div className={css.app}>Hello</div>
+      <div className={css.app}>Modal</div>
     </>
   );
 }
