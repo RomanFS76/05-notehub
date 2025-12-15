@@ -10,7 +10,13 @@ const NotesAPI = axios.create({
 });
 
 
-export const fetchNotes  = async()=>{
-    const {data} = await NotesAPI.get<Note[]>('/notes');
+
+interface FetchNotesResponse {
+  notes: Note[];
+  totalPages: number;
+}
+
+export const fetchNotes  = async():Promise<FetchNotesResponse>=>{
+    const {data} = await NotesAPI.get<FetchNotesResponse>('/notes');
     return data;
 };
