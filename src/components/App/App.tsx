@@ -4,25 +4,35 @@ import Pagination from '../Pagination/Pagination';
 import SearchBox from '../SearchBox/SearchBox';
 import css from './App.module.css';
 import NoteList from '../NoteList/NoteList';
+import { useState } from 'react';
 
 export default function App() {
+  const [page, setPage] = useState<number>(1);
+
   const { data } = useQuery({
-    queryKey: ['notes'],
-    queryFn: fetchNotes,
+    queryKey: ['notes', page],
+    queryFn: () => fetchNotes(page),
     placeholderData: keepPreviousData,
   });
 
   const notes = data?.notes ?? [];
+  const totalPages = data?.totalPages ?? 0;
 
   return (
     <>
       <div className={css.app}>
         <header className={css.toolbar}>
           <SearchBox />
-          <Pagination />
+          { totalPages > 1 &&
+            <Pagination
+              totalPages={totalPages}
+              page={page}
+              onChangePage={setPage}
+            />
+          }
           <button className={css.button}>Create note +</button>
         </header>
-        <NoteList notes={notes} />
+        {notes.length > 0 && <NoteList notes={notes} />}
       </div>
     </>
   );
