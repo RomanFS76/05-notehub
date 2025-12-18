@@ -5,9 +5,12 @@ import SearchBox from '../SearchBox/SearchBox';
 import css from './App.module.css';
 import NoteList from '../NoteList/NoteList';
 import { useState } from 'react';
+import Modal from '../Modal/Modal';
+import NoteForm from '../NoteForm/NoteForm';
 
 export default function App() {
   const [page, setPage] = useState<number>(1);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const { data } = useQuery({
     queryKey: ['notes', page],
@@ -23,16 +26,17 @@ export default function App() {
       <div className={css.app}>
         <header className={css.toolbar}>
           <SearchBox />
-          { totalPages > 1 &&
+          {totalPages > 1 && (
             <Pagination
               totalPages={totalPages}
               page={page}
               onChangePage={setPage}
             />
-          }
-          <button className={css.button}>Create note +</button>
+          )}
+          <button className={css.button} onClick={() => setIsModalOpen(true)}>Create note +</button>
         </header>
         {notes.length > 0 && <NoteList notes={notes} />}
+        {isModalOpen && <Modal> <NoteForm onCancel={() => setIsModalOpen(false)} /> </Modal>}
       </div>
     </>
   );
