@@ -12,6 +12,8 @@ export default function App() {
   const [page, setPage] = useState<number>(1);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
+  // ****************************useQuery****************************
+
   const { data } = useQuery({
     queryKey: ['notes', page],
     queryFn: () => fetchNotes(page),
@@ -20,6 +22,16 @@ export default function App() {
 
   const notes = data?.notes ?? [];
   const totalPages = data?.totalPages ?? 0;
+
+  // ****************************Modal*******************************
+
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
 
   return (
     <>
@@ -33,10 +45,16 @@ export default function App() {
               onChangePage={setPage}
             />
           )}
-          <button className={css.button} onClick={() => setIsModalOpen(true)}>Create note +</button>
+          <button className={css.button} onClick={openModal}>
+            Create note +
+          </button>
         </header>
         {notes.length > 0 && <NoteList notes={notes} />}
-        {isModalOpen && <Modal> <NoteForm onCancel={() => setIsModalOpen(false)} /> </Modal>}
+        {isModalOpen && (
+          <Modal onClose={closeModal}>
+            <NoteForm onCancel={closeModal} />
+          </Modal>
+        )}
       </div>
     </>
   );
