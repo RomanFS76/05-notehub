@@ -7,16 +7,21 @@ import NoteList from '../NoteList/NoteList';
 import { useState } from 'react';
 import Modal from '../Modal/Modal';
 import NoteForm from '../NoteForm/NoteForm';
+import { useDebounce } from 'use-debounce';
+import Loader from '../Loader/Loader';
 
 export default function App() {
   const [page, setPage] = useState<number>(1);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [search, setSearch] = useState('');
+
+  const [debounced] = useDebounce(search, 700);
 
   // ****************************useQuery****************************
 
-  const { data } = useQuery({
-    queryKey: ['notes', page],
-    queryFn: () => fetchNotes(page),
+  const { data, isLoading } = useQuery({
+    queryKey: ['notes', page, debounced],
+    queryFn: () => fetchNotes(page, debounced),
     placeholderData: keepPreviousData,
   });
 
@@ -37,7 +42,7 @@ export default function App() {
     <>
       <div className={css.app}>
         <header className={css.toolbar}>
-          <SearchBox />
+          <SearchBox valueSearch={search} onSearch={setSearch} />
           {totalPages > 1 && (
             <Pagination
               totalPages={totalPages}
@@ -49,6 +54,7 @@ export default function App() {
             Create note +
           </button>
         </header>
+        {isLoading && <Loader />}
         {notes.length > 0 && <NoteList notes={notes} />}
         {isModalOpen && (
           <Modal onClose={closeModal}>
