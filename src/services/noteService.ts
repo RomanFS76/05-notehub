@@ -8,20 +8,24 @@ const NotesAPI = axios.create({
     Authorization: `Bearer ${import.meta.env.VITE_NOTEHUB_TOKEN}`,
   },
 });
-
-
-
 interface FetchNotesResponse {
   notes: Note[];
   totalPages: number;
 }
 
-export const fetchNotes  = async(page:number):Promise<FetchNotesResponse>=>{
-    const {data} = await NotesAPI.get<FetchNotesResponse>('/notes',{params:{page,perPage: 12}});
-    return data;
+export const fetchNotes = async (page: number): Promise<FetchNotesResponse> => {
+  const { data } = await NotesAPI.get<FetchNotesResponse>('/notes', {
+    params: { page, perPage: 12 },
+  });
+  return data;
 };
 
 export const createNote = async (note: Note): Promise<Note> => {
   const { data } = await NotesAPI.post<Note>(`/notes`, note);
+  return data;
+};
+
+export const deleteNote = async (id: string): Promise<Note> => {
+  const { data } = await NotesAPI.delete<Note>(`/notes/${id}`);
   return data;
 };
