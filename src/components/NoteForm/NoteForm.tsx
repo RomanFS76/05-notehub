@@ -18,7 +18,7 @@ const initialValues: NoteFormValues = {
   tag: 'Todo',
 };
 
-interface noteFormProps {
+interface NoteFormProps {
   onCancel: () => void;
 }
 
@@ -34,7 +34,7 @@ const NoteFormSchema = Yup.object().shape({
     .required("Tag is required"),
 });
 
-export default function NoteForm({ onCancel }: noteFormProps) {
+export default function NoteForm({ onCancel }: NoteFormProps) {
   const fieldId = useId();
 
   const queryClient = useQueryClient();
@@ -43,6 +43,7 @@ export default function NoteForm({ onCancel }: noteFormProps) {
     mutationFn: createNote,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['notes'] });
+      onCancel();
     },
   });
 
@@ -51,8 +52,7 @@ export default function NoteForm({ onCancel }: noteFormProps) {
     actions: FormikHelpers<NoteFormValues>
   ) => {
     mutation.mutate(values);
-    actions.resetForm();
-    onCancel();
+    actions.resetForm();    
   };
 
   return (
