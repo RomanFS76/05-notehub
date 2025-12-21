@@ -20,7 +20,13 @@ export const fetchNotes = async (page: number, debounced: string): Promise<Fetch
   return data;
 };
 
-export const createNote = async (note: Note): Promise<Note> => {
+interface createNoteParams {
+  title: string;
+  content: string;
+  tag: 'Todo' | 'Work' | 'Personal' | 'Meeting' | 'Shopping';
+}
+
+export const createNote = async (note: createNoteParams): Promise<Note> => {
   const { data } = await NotesAPI.post<Note>(`/notes`, note);
   return data;
 };
