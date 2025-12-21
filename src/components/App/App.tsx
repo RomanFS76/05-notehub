@@ -38,11 +38,16 @@ export default function App() {
     setIsModalOpen(false);
   };
 
+  const handleSearch = (valueSearch: string) => {
+    setSearch(valueSearch);
+    setPage(1);
+  };
+
   return (
     <>
       <div className={css.app}>
         <header className={css.toolbar}>
-          <SearchBox valueSearch={search} onSearch={setSearch} />
+          <SearchBox valueSearch={search} onSearch={handleSearch} />
           {totalPages > 1 && (
             <Pagination
               totalPages={totalPages}

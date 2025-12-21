@@ -13,7 +13,7 @@ interface FetchNotesResponse {
   totalPages: number;
 }
 
-export const fetchNotes = async (page: number, debounced: string): Promise<FetchNotesResponse> => {
+export const fetchNotes = async (page=1, debounced: string): Promise<FetchNotesResponse> => {
   const { data } = await NotesAPI.get<FetchNotesResponse>('/notes', {
     params: { page, perPage: 12, search: debounced },
   });
