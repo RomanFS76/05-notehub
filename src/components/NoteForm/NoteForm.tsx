@@ -9,7 +9,7 @@ import { useId } from 'react';
 interface NoteFormValues {
   title: string;
   content: string;
-  tag: string;
+  tag: 'Todo' | 'Work' | 'Personal' | 'Meeting' | 'Shopping';
 }
 
 const initialValues: NoteFormValues = {
