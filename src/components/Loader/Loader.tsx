@@ -20,7 +20,7 @@ const Loader = () => {
           wrapperClass=""
         />
       </div>
-      <p className={css.text}>Loading movies, please wait...</p>
+      <p className={css.text}>Loading notes, please wait...</p>
     </>
   );
 };
